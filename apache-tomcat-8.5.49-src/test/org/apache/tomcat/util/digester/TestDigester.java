@@ -25,6 +25,9 @@ public class TestDigester {
         digester.addObjectCreate("department/user","org.apache.tomcat.util.digester.TestDigester$User");
         // use setter process department/user's attribute
         digester.addSetProperties("department/user");
+        digester.addObjectCreate("department/user/gender", "org.apache.tomcat.util.digester.TestDigester$Gender");
+        digester.addSetProperties("department/user/gender");
+        digester.addSetNext("department/user/gender","setGender","org.apache.tomcat.util.digester.TestDigester$Gender");
         // call addUser
         digester.addSetNext("department/user", "addUser","org.apache.tomcat.util.digester.TestDigester$User");
         digester.addCallMethod("department/extension","putExtension",2);
@@ -34,13 +37,37 @@ public class TestDigester {
         Department department = (Department) digester.parse(TestDigester.class.getResourceAsStream("./test.xml"));
         Assert.assertEquals(department.getName(),"department001");
         Assert.assertEquals(department.getCode(),"deptcode001");
+        Assert.assertEquals(department.getUsers().get(0).getGender().getGender(),"female");
+        Assert.assertEquals(department.getUsers().get(1).getGender().getGender(),"male");
+
+    }
+
+    public static class Gender {
+        private String gender;
+
+        public String getGender() {
+            return gender;
+        }
+
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
     }
 
    public static class User {
         private String name;
         private String code;
+        private Gender gender;
 
-        public String getName() {
+       public Gender getGender() {
+           return gender;
+       }
+
+       public void setGender(Gender gender) {
+           this.gender = gender;
+       }
+
+       public String getName() {
             return name;
         }
 
@@ -67,6 +94,10 @@ public class TestDigester {
 
         public void addUser(User user) {
             this.users.add(user);
+        }
+
+        public List<User> getUsers() {
+            return users;
         }
 
         public void putExtension(String name, String value) {
