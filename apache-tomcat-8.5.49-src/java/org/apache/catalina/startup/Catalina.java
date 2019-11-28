@@ -453,9 +453,9 @@ public class Catalina {
                                  "org.apache.catalina.core.StandardServer",
                                  "className");
         digester.addSetProperties("Server");
-        digester.addSetNext("Server",
-                            "setServer",
-                            "org.apache.catalina.Server");
+        //digester.addSetNext("Server",
+        //                     "setServer",
+        //                    "org.apache.catalina.Server");
 
         return digester;
 
