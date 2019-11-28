@@ -23,6 +23,7 @@ public class TestDigester {
         digester.addObjectCreate("department", "org.apache.tomcat.util.digester.TestDigester$Department");
         digester.addSetProperties("department");
         digester.addObjectCreate("department/user","org.apache.tomcat.util.digester.TestDigester$User");
+        // use setter process department/user's attribute
         digester.addSetProperties("department/user");
         // call addUser
         digester.addSetNext("department/user", "addUser","org.apache.tomcat.util.digester.TestDigester$User");

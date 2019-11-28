@@ -296,6 +296,8 @@ public class Catalina {
                                  "org.apache.catalina.core.StandardServer",
                                  "className");
         digester.addSetProperties("Server");
+        // call Catalina's setServer why digester's first node is Catalina? why?
+        // answer: digester will call push(this) set Catalina as digester stack 's first node
         digester.addSetNext("Server",
                             "setServer",
                             "org.apache.catalina.Server");
@@ -453,9 +455,9 @@ public class Catalina {
                                  "org.apache.catalina.core.StandardServer",
                                  "className");
         digester.addSetProperties("Server");
-        //digester.addSetNext("Server",
-        //                     "setServer",
-        //                    "org.apache.catalina.Server");
+        digester.addSetNext("Server",
+                            "setServer",
+                           "org.apache.catalina.Server");
 
         return digester;
 
