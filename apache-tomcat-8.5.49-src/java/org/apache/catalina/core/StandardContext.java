@@ -193,6 +193,7 @@ public class StandardContext extends ContainerBase
 
     /**
      * Lifecycle provider.
+     * Use to create filter or servlet instance.
      */
     private InstanceManager instanceManager = null;
 
@@ -4946,6 +4947,7 @@ public class StandardContext extends ContainerBase
             }
         }
         if (ok) {
+            // prepare resources
             resourcesStart();
         }
 
@@ -4985,6 +4987,7 @@ public class StandardContext extends ContainerBase
             useNaming = false;
         }
 
+        // jndi support
         if (ok && isUseNaming()) {
             if (getNamingContextListener() == null) {
                 NamingContextListener ncl = new NamingContextListener();
@@ -5063,6 +5066,7 @@ public class StandardContext extends ContainerBase
                 fireLifecycleEvent(Lifecycle.CONFIGURE_START_EVENT, null);
 
                 // Start our child containers, if not already started
+                // StandardContext's children is Servlet/ServletWrapper
                 for (Container child : findChildren()) {
                     if (!child.getState().isAvailable()) {
                         child.start();
@@ -5161,6 +5165,7 @@ public class StandardContext extends ContainerBase
             }
 
             // Configure and call application event listeners
+            // ServletContainerInitializer will startup before ServletContextListener
             if (ok) {
                 if (!listenerStart()) {
                     log.error(sm.getString("standardContext.listenerFail"));
@@ -5188,6 +5193,7 @@ public class StandardContext extends ContainerBase
 
             // Configure and call application filters
             if (ok) {
+                // Listener will startup before filter
                 if (!filterStart()) {
                     log.error(sm.getString("standardContext.filterFail"));
                     ok = false;

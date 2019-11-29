@@ -277,6 +277,8 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
      * resources may be requested by binary name (classes) or path (other
      * resources such as property files) and the mapping from binary name to
      * path is unambiguous but the reverse mapping is ambiguous.
+     *
+     * TODO change name
      */
     protected final Map<String, ResourceEntry> resourceEntries =
             new ConcurrentHashMap<>();

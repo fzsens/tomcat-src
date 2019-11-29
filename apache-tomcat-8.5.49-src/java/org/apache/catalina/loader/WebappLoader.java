@@ -283,6 +283,7 @@ public class WebappLoader extends LifecycleMBeanBase
      */
     @Override
     public void backgroundProcess() {
+        // i will remove those responsibility to standardContext but not webappLoader
         if (reloadable && modified()) {
             try {
                 Thread.currentThread().setContextClassLoader
