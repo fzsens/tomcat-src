@@ -67,10 +67,15 @@ public class StandardRoot extends LifecycleMBeanBase implements WebResourceRoot 
 
     private Context context;
     private boolean allowLinking = false;
+    // define in context.xml tag <PreResources>
     private final List<WebResourceSet> preResources = new ArrayList<>();
+    // Web Application dir、include War and War's extracted folder
+    // find sequential WEB-INF/classes、WEB-INF/lib
     private WebResourceSet main;
     private final List<WebResourceSet> classResources = new ArrayList<>();
+    // context.xml <JarResources>
     private final List<WebResourceSet> jarResources = new ArrayList<>();
+    // context.xml <PostResources>
     private final List<WebResourceSet> postResources = new ArrayList<>();
 
     private final Cache cache = new Cache(this);
