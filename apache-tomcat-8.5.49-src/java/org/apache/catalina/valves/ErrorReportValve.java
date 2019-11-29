@@ -52,7 +52,8 @@ public class ErrorReportValve extends ValveBase {
 
     private boolean showReport = true;
 
-    private boolean showServerInfo = true;
+    // default don't show server info
+    private boolean showServerInfo = false;
 
     //------------------------------------------------------ Constructor
     public ErrorReportValve() {
