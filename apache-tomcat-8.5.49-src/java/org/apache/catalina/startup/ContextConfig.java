@@ -485,7 +485,10 @@ public class ContextConfig implements LifecycleListener {
                 }
             }
         }
+        // use tomcat default context setting above
+
         if (context.getConfigFile() != null) {
+            // use customize setting
             processContextConfig(digester, context.getConfigFile());
         }
 
