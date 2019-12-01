@@ -297,6 +297,7 @@ public class ContextConfig implements LifecycleListener {
 
         // Process the event that has occurred
         if (event.getType().equals(Lifecycle.CONFIGURE_START_EVENT)) {
+            // create servlet wrapper
             configureStart();
         } else if (event.getType().equals(Lifecycle.BEFORE_START_EVENT)) {
             beforeStart();
@@ -568,6 +569,9 @@ public class ContextConfig implements LifecycleListener {
 
     /**
      * Adjust docBase.
+     *
+     * when use war deploy mode , docBase should set as decompression path
+     *
      * @throws IOException cannot access the context base path
      */
     protected void fixDocBase() throws IOException {
@@ -1690,6 +1694,8 @@ public class ContextConfig implements LifecycleListener {
 
 
     /**
+     * web-fragment support jar include jsp resources
+     *
      * Scan JARs that contain web-fragment.xml files that will be used to
      * configure this application to see if they also contain static resources.
      * If static resources are found, add them to the context. Resources are
