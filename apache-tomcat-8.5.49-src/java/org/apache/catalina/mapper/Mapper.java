@@ -39,6 +39,8 @@ import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
+ * Mapper maintained HOST、Context、Wrapper（Servlet）、Container's relationship
+ *
  * Mapper, which implements the servlet API mapping rules (which are derived
  * from the HTTP rules).
  *

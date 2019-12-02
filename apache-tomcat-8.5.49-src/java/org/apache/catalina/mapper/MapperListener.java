@@ -42,6 +42,8 @@ import org.apache.tomcat.util.res.StringManager;
 /**
  * Mapper listener.
  *
+ * create a bridge of mapper & service , use observer design pattern
+ *
  * @author Remy Maucherat
  * @author Costin Manolache
  */
