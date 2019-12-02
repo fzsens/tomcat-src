@@ -777,6 +777,7 @@ public final class Mapper {
 
         // Context mapping
         ContextList contextList = mappedHost.contextList;
+        // all standardContext of this host
         MappedContext[] contexts = contextList.contexts;
         int pos = find(contexts, uri);
         if (pos == -1) {
@@ -789,6 +790,7 @@ public final class Mapper {
         boolean found = false;
         MappedContext context = null;
         while (pos >= 0) {
+            // gradually fuzzy
             context = contexts[pos];
             if (uri.startsWith(context.name)) {
                 length = context.name.length();
@@ -805,6 +807,7 @@ public final class Mapper {
             } else {
                 lastSlash = lastSlash(uri);
             }
+            // reduce url
             uri.setEnd(lastSlash);
             pos = find(contexts, uri);
         }
@@ -812,6 +815,7 @@ public final class Mapper {
 
         if (!found) {
             if (contexts[0].name.equals("")) {
+                // can not find match context , set the first one
                 context = contexts[0];
             } else {
                 context = null;
@@ -821,8 +825,10 @@ public final class Mapper {
             return;
         }
 
+        // update mapping info
         mappingData.contextPath.setString(context.name);
 
+        // deal with multiple version
         ContextVersion contextVersion = null;
         ContextVersion[] contextVersions = context.versions;
         final int versionCount = contextVersions.length;
@@ -1202,38 +1208,39 @@ public final class Mapper {
     private static final <T> int find(MapElement<T>[] map, CharChunk name,
                                   int start, int end) {
 
-        int a = 0;
-        int b = map.length - 1;
+        int low = 0;
+        int high = map.length - 1;
 
         // Special cases: -1 and 0
-        if (b == -1) {
+        if (high == -1) {
             return -1;
         }
 
         if (compare(name, start, end, map[0].name) < 0 ) {
             return -1;
         }
-        if (b == 0) {
+        if (high == 0) {
             return 0;
         }
 
-        int i = 0;
+        int mid = 0;
         while (true) {
-            i = (b + a) >>> 1;
-            int result = compare(name, start, end, map[i].name);
+            // binary search
+            mid = (high + low) >>> 1;
+            int result = compare(name, start, end, map[mid].name);
             if (result == 1) {
-                a = i;
+                low = mid;
             } else if (result == 0) {
-                return i;
+                return mid;
             } else {
-                b = i;
+                high = mid;
             }
-            if ((b - a) == 1) {
-                int result2 = compare(name, start, end, map[b].name);
+            if ((high - low) == 1) {
+                int result2 = compare(name, start, end, map[high].name);
                 if (result2 < 0) {
-                    return a;
+                    return low;
                 } else {
-                    return b;
+                    return high;
                 }
             }
         }
@@ -1298,7 +1305,7 @@ public final class Mapper {
 
     /**
      * Find a map element given its name in a sorted array of map elements.
-     * This will return the index for the closest inferior or equal item in the
+     * This will return the index for <b>the closest inferior or equal item</b> in the
      * given array.
      * @see #exactFind(MapElement[], String)
      */
@@ -1516,6 +1523,7 @@ public final class Mapper {
      */
     private static final <T> boolean insertMap
         (MapElement<T>[] oldMap, MapElement<T>[] newMap, MapElement<T> newElement) {
+        // ensure the orderly of mappers
         int pos = find(oldMap, newElement.name);
         if ((pos != -1) && (newElement.name.equals(oldMap[pos].name))) {
             return false;
@@ -1578,6 +1586,9 @@ public final class Mapper {
     // ------------------------------------------------------- Host Inner Class
 
 
+    /**
+     * encapsulation host distinguish from Host that using in Catalina(Service)
+     */
     protected static final class MappedHost extends MapElement<Host> {
 
         public volatile ContextList contextList;
@@ -1693,7 +1704,9 @@ public final class Mapper {
 
     // ---------------------------------------------------- Context Inner Class
 
-
+    /**
+     * support multiple-version context
+     */
     protected static final class MappedContext extends MapElement<Void> {
         public volatile ContextVersion[] versions;
 
@@ -1703,15 +1716,30 @@ public final class Mapper {
         }
     }
 
+    /**
+     * encapsulation context with version information distinguish from Context
+     */
     protected static final class ContextVersion extends MapElement<Context> {
         public final String path;
         public final int slashCount;
         public final WebResourceRoot resources;
+        // match for /abc/ folder not path
         public String[] welcomeResources;
+
+        // url-mapping : /
+        // priority : 4
         public MappedWrapper defaultWrapper = null;
+        // url-mapping : /abc
+        // priority : 1
         public MappedWrapper[] exactWrappers = new MappedWrapper[0];
+        // url-mapping : /abc/*
+        // priority : 2
+        // gradually fuzzy like mappedContext
         public MappedWrapper[] wildcardWrappers = new MappedWrapper[0];
+        // url-mapping : *.do
+        // priority : 3
         public MappedWrapper[] extensionWrappers = new MappedWrapper[0];
+
         public int nesting = 0;
         private volatile boolean paused;
 

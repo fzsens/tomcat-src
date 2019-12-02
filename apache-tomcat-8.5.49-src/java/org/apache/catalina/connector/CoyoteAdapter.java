@@ -55,7 +55,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 
 /**
- * Implementation of a request processor which delegates the processing to a
+ * Implementation of a <b>request processor</b> which delegates the processing to a
  * Coyote processor.
  *
  * @author Craig R. McClanahan
@@ -82,6 +82,7 @@ public class CoyoteAdapter implements Adapter {
         Boolean.parseBoolean(System.getProperty("org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH", "false"));
 
 
+    // use ThreadLocal cache threadName
     private static final ThreadLocal<String> THREAD_NAME =
             new ThreadLocal<String>() {
 
@@ -295,7 +296,14 @@ public class CoyoteAdapter implements Adapter {
         return success;
     }
 
-
+    /**
+     * after Connector received request , call service method do process
+     *
+     * @param req The request object
+     * @param res The response object
+     *
+     * @throws Exception
+     */
     @Override
     public void service(org.apache.coyote.Request req, org.apache.coyote.Response res)
             throws Exception {
@@ -547,6 +555,9 @@ public class CoyoteAdapter implements Adapter {
     // ------------------------------------------------------ Protected Methods
 
     /**
+     *
+     * Connector use org.apache.coyote.Request convert to org.apache.catalina.Request for container process
+     *
      * Perform the necessary processing after the HTTP headers have been parsed
      * to enable the request/response pair to be passed to the start of the
      * container pipeline for processing.
