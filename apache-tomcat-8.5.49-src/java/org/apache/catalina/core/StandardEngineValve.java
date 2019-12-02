@@ -56,6 +56,10 @@ final class StandardEngineValve extends ValveBase {
     // --------------------------------------------------------- Public Methods
 
     /**
+     * 1. Step 1 of request processing
+     * 2. from {@link org.apache.catalina.connector.CoyoteAdapter} connector.getService().getContainer().getPipeline().getFirst()
+     * 3. StandardEngineValve is the basic valve of StandardEngine(Container of Service)
+     *
      * Select the appropriate child Host to process this request,
      * based on the requested server name.  If no matching Host can
      * be found, return an appropriate HTTP error.

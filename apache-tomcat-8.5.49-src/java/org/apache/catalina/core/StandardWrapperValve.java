@@ -80,6 +80,10 @@ final class StandardWrapperValve
 
 
     /**
+     * 1. Step 4 of request processing
+     * 2. from {@link StandardContextValve} wrapper.getPipeline().getFirst().invoke(request, response)
+     * 3. this is the StandardWrapper's basic valve
+     *
      * Invoke the servlet we are managing, respecting the rules regarding
      * servlet lifecycle and SingleThreadModel support.
      *

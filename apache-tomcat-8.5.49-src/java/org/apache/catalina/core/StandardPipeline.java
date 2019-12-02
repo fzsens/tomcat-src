@@ -86,6 +86,8 @@ public class StandardPipeline extends LifecycleBase
 
     /**
      * The basic Valve (if any) associated with this Pipeline.
+     *
+     * basic valve will be call at last.
      */
     protected Valve basic = null;
 

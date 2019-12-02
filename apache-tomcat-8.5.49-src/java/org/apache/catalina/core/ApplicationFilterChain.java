@@ -228,6 +228,9 @@ public final class ApplicationFilterChain implements FilterChain {
                                            args,
                                            principal);
             } else {
+                /**
+                 * 1. Step 5 finally call servlet.service
+                 */
                 servlet.service(request, response);
             }
         } catch (IOException | ServletException | RuntimeException e) {
@@ -282,6 +285,7 @@ public final class ApplicationFilterChain implements FilterChain {
                 return;
 
         if (n == filters.length) {
+            // filter array extend
             ApplicationFilterConfig[] newFilters =
                 new ApplicationFilterConfig[n + INCREMENT];
             System.arraycopy(filters, 0, newFilters, 0, n);

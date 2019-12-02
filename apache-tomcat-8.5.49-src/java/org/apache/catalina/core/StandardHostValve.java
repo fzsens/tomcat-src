@@ -93,6 +93,10 @@ final class StandardHostValve extends ValveBase {
     // --------------------------------------------------------- Public Methods
 
     /**
+     * 1. Step 2 of request processing
+     * 2. from {@link StandardEngineValve} host.getPipeline().getFirst().invoke(request, response)
+     * 3. this is the StandardHost 's basic valve
+     *
      * Select the appropriate child Context to process this request,
      * based on the specified request URI.  If no matching Context can
      * be found, return an appropriate HTTP error.

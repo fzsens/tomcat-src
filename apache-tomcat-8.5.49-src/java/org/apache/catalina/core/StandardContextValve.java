@@ -48,6 +48,10 @@ final class StandardContextValve extends ValveBase {
 
 
     /**
+     * 1. Step 3 of request processing
+     * 2. from {@link StandardHostValve} context.getPipeline().getFirst().invoke(request, response)
+     * 3. this is the basic valve of StandardContext
+     *
      * Select the appropriate child Wrapper to process this request,
      * based on the specified request URI.  If no matching Wrapper can
      * be found, return an appropriate HTTP error.
