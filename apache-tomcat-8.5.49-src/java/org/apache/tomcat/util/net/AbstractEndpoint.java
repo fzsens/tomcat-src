@@ -50,6 +50,9 @@ import org.apache.tomcat.util.threads.TaskThreadFactory;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 
 /**
+ *
+ * core concept of coyote, abstract the transportation layer, including communication listen & socket acceptor
+ *
  * @param <S> The type for the sockets managed by this endpoint.
  *
  * @author Mladen Turk

@@ -25,6 +25,8 @@ import org.apache.tomcat.util.net.SocketEvent;
 import org.apache.tomcat.util.net.SocketWrapperBase;
 
 /**
+ * process all protocols create request and response instance
+ *
  * Common interface for processors of all protocols.
  */
 public interface Processor {
