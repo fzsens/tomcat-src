@@ -227,6 +227,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                 throw new IllegalArgumentException(sm.getString("endpoint.init.bind.inherited"));
             }
         }
+        // why using blocking mode?
         serverSock.configureBlocking(true); //mimic APR behavior
 
         // Initialize thread count defaults for acceptor, poller
@@ -399,6 +400,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
             Socket sock = socket.socket();
             socketProperties.setProperties(sock);
 
+            // reuse NioChannel reduce cost to create new one
             NioChannel channel = nioChannels.pop();
             if (channel == null) {
                 SocketBufferHandler bufhandler = new SocketBufferHandler(
@@ -414,6 +416,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                 channel.setIOChannel(socket);
                 channel.reset();
             }
+            // put into poller
             getPoller0().register(channel);
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
@@ -443,6 +446,8 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
 
     // --------------------------------------------------- Acceptor Inner Class
     /**
+     * Acceptor create connection (socketChannel in java), like Acceptor role of Reactor mode
+     *
      * The background thread that listens for incoming TCP/IP connections and
      * hands them off to an appropriate processor.
      */
@@ -593,6 +598,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
         @Override
         public void run() {
             if (interestOps == OP_REGISTER) {
+                // register the socket OP_READ Event of poller's selector
                 try {
                     socket.getIOChannel().register(
                             socket.getPoller().getSelector(), SelectionKey.OP_READ, socketWrapper);
@@ -600,6 +606,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                     log.error(sm.getString("endpoint.nio.registerFail"), x);
                 }
             } else {
+                // modify selectionKey's interestOps
                 final SelectionKey key = socket.getIOChannel().keyFor(socket.getPoller().getSelector());
                 try {
                     if (key == null) {
@@ -637,6 +644,8 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
     }
 
     /**
+     * Poller process I/O event, Event Driven???
+     *
      * Poller class.
      */
     public class Poller implements Runnable {
@@ -673,6 +682,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
 
         private void addEvent(PollerEvent event) {
             events.offer(event);
+            // process event immediately
             if ( wakeupCounter.incrementAndGet() == 0 ) selector.wakeup();
         }
 
@@ -710,7 +720,9 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
             for (int i = 0, size = events.size(); i < size && (pe = events.poll()) != null; i++ ) {
                 result = true;
                 try {
+                    // add or modified the pollerEvent's selectionKey interestOps
                     pe.run();
+                    // reset event , so you can reset it.
                     pe.reset();
                     if (running && !paused) {
                         eventCache.push(pe);
@@ -739,10 +751,16 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
             ka.setSecure(isSSLEnabled());
             ka.setReadTimeout(getConnectionTimeout());
             ka.setWriteTimeout(getConnectionTimeout());
+            // pooled event instance
             PollerEvent r = eventCache.pop();
+            // add READ event listen
             ka.interestOps(SelectionKey.OP_READ);//this is what OP_REGISTER turns into.
-            if ( r==null) r = new PollerEvent(socket,ka,OP_REGISTER);
-            else r.reset(socket,ka,OP_REGISTER);
+            if (r == null) {
+                r = new PollerEvent(socket, ka, OP_REGISTER);
+            } else {
+                r.reset(socket, ka, OP_REGISTER);
+            }
+            // add to poller event queue
             addEvent(r);
         }
 
@@ -822,6 +840,8 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                             //do a non blocking select
                             keyCount = selector.selectNow();
                         } else {
+                            // wakeupCounter <= 0 , means in this loop not event added
+                            // then if we are here , means that we are waiting for event ready blocking with timeout
                             keyCount = selector.select(selectorTimeout);
                         }
                         wakeupCounter.set(0);
@@ -857,6 +877,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                         iterator.remove();
                     } else {
                         iterator.remove();
+                        // process socket I/O event
                         processKey(sk, attachment);
                     }
                 }//while
@@ -877,6 +898,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                         if ( attachment.getSendfileData() != null ) {
                             processSendfile(sk,attachment, false);
                         } else {
+                            // unregister interestOps that is ready
                             unreg(sk, attachment, sk.readyOps());
                             boolean closeSocket = false;
                             // Read goes before write
@@ -1451,6 +1473,8 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
     // ---------------------------------------------- SocketProcessor Inner Class
 
     /**
+     * like Worker role of reactor mode
+     *
      * This class is the equivalent of the Worker, but will simply use in an
      * external Executor thread pool.
      */

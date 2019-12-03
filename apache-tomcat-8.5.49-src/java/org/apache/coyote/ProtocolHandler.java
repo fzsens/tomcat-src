@@ -25,6 +25,8 @@ import org.apache.tomcat.util.net.SSLHostConfig;
  *
  * default implementation Http11NioProtocol/Http11Nio2Protocol/Http11ArpProtocol & AjpXxxProtocol
  *
+ * ProtocolHandler create bridge of Endpoint（low level I/O） 、Processor（particular protocol create request）、Adapter(CoyoteAdapter)
+ *
  * This is the main interface to be implemented by a coyote protocol.
  * Adapter is the main interface to be implemented by a coyote servlet
  * container.

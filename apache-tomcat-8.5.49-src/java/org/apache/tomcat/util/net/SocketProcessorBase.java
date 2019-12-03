@@ -18,6 +18,10 @@ package org.apache.tomcat.util.net;
 
 import java.util.Objects;
 
+/**
+ * abstract of socket processor , the place of deal with I/O event in the end.
+ * @param <S>
+ */
 public abstract class SocketProcessorBase<S> implements Runnable {
 
     protected SocketWrapperBase<S> socketWrapper;
