@@ -840,7 +840,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                             //do a non blocking select
                             keyCount = selector.selectNow();
                         } else {
-                            // wakeupCounter <= 0 , means in this loop not event added
+                            // wakeupCounter <= 0 , means that is not event tobe added in this loop
                             // then if we are here , means that we are waiting for event ready blocking with timeout
                             keyCount = selector.select(selectorTimeout);
                         }
