@@ -156,11 +156,13 @@ public class NioSelectorPool {
     public int write(ByteBuffer buf, NioChannel socket, Selector selector,
                      long writeTimeout, boolean block) throws IOException {
         if ( SHARED && block ) {
+            // block mode using NioBlockingSelector & BlockPoller
             return blockingSelector.write(buf,socket,writeTimeout);
         }
         SelectionKey key = null;
         int written = 0;
         boolean timedout = false;
+        // write directly
         int keycount = 1; //assume we can write
         long time = System.currentTimeMillis(); //start the timeout timer
         try {
@@ -175,8 +177,10 @@ public class NioSelectorPool {
                         time = System.currentTimeMillis(); //reset our timeout timer
                         continue; //we successfully wrote, try again without a selector
                     }
+                    // don't block mode
                     if (cnt==0 && (!block)) break; //don't block
                 }
+                // if first time we write failed register a op_write interestOps
                 if ( selector != null ) {
                     //register OP_WRITE to the selector
                     if (key==null) key = socket.getIOChannel().register(selector, SelectionKey.OP_WRITE);

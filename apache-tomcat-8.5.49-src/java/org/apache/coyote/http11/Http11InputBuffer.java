@@ -335,6 +335,9 @@ public class Http11InputBuffer implements InputBuffer, ApplicationBufferHandler 
 
 
     /**
+     *
+     * read request header from wrapper
+     *
      * Read the request line. This function is meant to be used during the
      * HTTP request header parsing. Do NOT attempt to read the request body
      * using it.
