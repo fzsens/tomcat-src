@@ -276,6 +276,10 @@ public abstract class ContainerBase extends LifecycleMBeanBase
      * children associated with this container.
      */
     private int startStopThreads = 1;
+
+    /**
+     * start context & another container use independent executor .
+     */
     protected ThreadPoolExecutor startStopExecutor;
 
 
