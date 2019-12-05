@@ -260,6 +260,7 @@ public class GroupChannel extends ChannelInterceptorBase
                 payload = new InterceptorPayload();
                 payload.setErrorHandler(handler);
             }
+            // invoke interceptor chain
             getFirstInterceptor().sendMessage(destination, data, payload);
             if ( Logs.MESSAGES.isTraceEnabled() ) {
                 Logs.MESSAGES.trace("GroupChannel - Sent msg:" + new UniqueId(data.getUniqueId()) +

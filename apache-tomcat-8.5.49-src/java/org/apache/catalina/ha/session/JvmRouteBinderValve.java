@@ -175,6 +175,7 @@ public class JvmRouteBinderValve extends ValveBase implements ClusterValve {
                        && getCluster().getManager(((ClusterManager)manager).getName()) != null)
                      ||
                      (manager instanceof PersistentManager))) {
+                 // change sessionID request will change destination
                 handlePossibleTurnover(request);
             }
         }

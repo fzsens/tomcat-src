@@ -19,6 +19,8 @@ package org.apache.catalina.tribes;
 import java.io.Serializable;
 /**
  *
+ * received message from other instance(in the same group)
+ *
  * <p>Title: ChannelListener</p>
  *
  * <p>Description: An interface to listens to incoming messages from a channel </p>
