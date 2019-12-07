@@ -64,6 +64,9 @@ import org.apache.tomcat.util.net.SendfileState;
 import org.apache.tomcat.util.net.SocketWrapperBase;
 import org.apache.tomcat.util.res.StringManager;
 
+/**
+ * read and write data through socket/SocketWrapperBase
+ */
 public class Http11Processor extends AbstractProcessor {
 
     private static final Log log = LogFactory.getLog(Http11Processor.class);
