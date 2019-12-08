@@ -166,6 +166,7 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
         try {
             super.execute(command);
         } catch (RejectedExecutionException rx) {
+            // wait some time . different from original ThreadPoolExecutor
             if (super.getQueue() instanceof TaskQueue) {
                 final TaskQueue queue = (TaskQueue)super.getQueue();
                 try {
