@@ -228,6 +228,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
             }
         }
         // why using blocking mode?
+        // tomcat accept use blocking mode diff from nginx . more simple ?
         serverSock.configureBlocking(true); //mimic APR behavior
 
         // Initialize thread count defaults for acceptor, poller
