@@ -1356,6 +1356,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase
                         // Ignore
                     }
                     if (!threadDone) {
+                        // pass host instance
                         processChildren(ContainerBase.this);
                     }
                 }
@@ -1388,6 +1389,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase
                 Container[] children = container.findChildren();
                 for (int i = 0; i < children.length; i++) {
                     if (children[i].getBackgroundProcessorDelay() <= 0) {
+                        // traverse children
                         processChildren(children[i]);
                     }
                 }
