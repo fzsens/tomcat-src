@@ -351,6 +351,7 @@ public class CoyoteAdapter implements Adapter {
                 connector.getService().getContainer().getPipeline().getFirst().invoke(
                         request, response);
             }
+            // after startAsync this will be true
             if (request.isAsync()) {
                 // do async support
                 async = true;
