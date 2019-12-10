@@ -132,8 +132,14 @@ public final class Bootstrap {
      */
     private Object catalinaDaemon = null;
 
+    /**
+     * inherit classloader
+     */
+    // shared between catalina & webapp
     ClassLoader commonLoader = null;
+     // load Tomcat classes
     ClassLoader catalinaLoader = null;
+     // load webApp shared classes
     ClassLoader sharedLoader = null;
 
 
