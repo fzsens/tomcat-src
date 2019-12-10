@@ -352,6 +352,7 @@ public class CoyoteAdapter implements Adapter {
                         request, response);
             }
             if (request.isAsync()) {
+                // do async support
                 async = true;
                 ReadListener readListener = req.getReadListener();
                 if (readListener != null && request.isFinished()) {

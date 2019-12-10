@@ -1680,6 +1680,9 @@ public class Request implements org.apache.catalina.servlet4preview.http.HttpSer
         return startAsync(getRequest(),response.getResponse());
     }
 
+    /**
+     * create AsyncContext hold request and response, avoid recycle these objects.
+     */
     @Override
     public AsyncContext startAsync(ServletRequest request,
             ServletResponse response) {

@@ -502,6 +502,10 @@ public class Http11Processor extends AbstractProcessor {
 
             // Parsing the request header
             try {
+                /**
+                 * servlet async mode , complete() will call OP_READ Again，but request is read completed
+                 * so it will return state OPEN
+                 */
                 if (!inputBuffer.parseRequestLine(keptAlive)) {
                     if (inputBuffer.getParsingRequestLinePhase() == -1) {
                         return SocketState.UPGRADING;

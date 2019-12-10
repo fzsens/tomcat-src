@@ -89,6 +89,7 @@ public class AsyncContextImpl implements AsyncContext, AsyncContextCallback {
             logDebug("complete   ");
         }
         check();
+        // trigger response finish
         request.getCoyoteRequest().action(ActionCode.ASYNC_COMPLETE, null);
     }
 
