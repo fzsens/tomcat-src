@@ -85,6 +85,7 @@ public class StandardSession implements HttpSession, Session, Serializable {
 
     protected static final boolean STRICT_SERVLET_COMPLIANCE;
 
+    // use atomicInteger check session status
     protected static final boolean ACTIVITY_CHECK;
 
     protected static final boolean LAST_ACCESS_AT_START;
@@ -650,6 +651,7 @@ public class StandardSession implements HttpSession, Session, Serializable {
     @Override
     public boolean isValid() {
 
+        // check session status
         if (!this.isValid) {
             return false;
         }
@@ -695,6 +697,7 @@ public class StandardSession implements HttpSession, Session, Serializable {
     @Override
     public void access() {
 
+        // refresh session access time
         this.thisAccessedTime = System.currentTimeMillis();
 
         if (ACTIVITY_CHECK) {
