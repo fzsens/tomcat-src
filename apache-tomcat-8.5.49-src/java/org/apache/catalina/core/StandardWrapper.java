@@ -748,6 +748,7 @@ public class StandardWrapper extends ContainerBase
         boolean newInstance = false;
 
         // If not SingleThreadedModel, return the same instance every time
+        // normally servlet is singleton excepted implement SingleThreadModel
         if (!singleThreadModel) {
             // Load and initialize our instance if necessary
             if (instance == null || !instanceInitialized) {
