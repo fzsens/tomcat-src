@@ -499,12 +499,13 @@ public class Http11Processor extends AbstractProcessor {
 
         while (!getErrorState().isError() && keepAlive && !isAsync() && upgradeToken == null &&
                 sendfileState == SendfileState.DONE && !endpoint.isPaused()) {
-
             // Parsing the request header
             try {
                 /**
                  * servlet async mode , complete() will call OP_READ Again，but request is read completed
                  * so it will return state OPEN
+                 *
+                 * state OPEN is use for http-keepalive
                  */
                 if (!inputBuffer.parseRequestLine(keptAlive)) {
                     if (inputBuffer.getParsingRequestLinePhase() == -1) {
@@ -666,6 +667,7 @@ public class Http11Processor extends AbstractProcessor {
             if (!isAsync() || getErrorState().isError()) {
                 request.updateCounters();
                 if (getErrorState().isIoAllowed()) {
+                    // reset input&output buffer
                     inputBuffer.nextRequest();
                     outputBuffer.nextRequest();
                 }
@@ -687,6 +689,9 @@ public class Http11Processor extends AbstractProcessor {
 
         rp.setStage(org.apache.coyote.Constants.STAGE_ENDED);
 
+        /**
+         * generate socketstate
+         */
         if (getErrorState().isError() || endpoint.isPaused()) {
             return SocketState.CLOSED;
         } else if (isAsync()) {

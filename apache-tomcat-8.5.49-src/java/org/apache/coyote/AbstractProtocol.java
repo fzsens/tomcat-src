@@ -866,6 +866,9 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
                     }
                 } while ( state == SocketState.UPGRADING);
 
+                /**
+                 * management socketstate
+                 */
                 if (state == SocketState.LONG) {
                     // In the middle of processing a request/response. Keep the
                     // socket associated with the processor. Exact requirements
@@ -879,6 +882,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
                     // processor. Continue to poll for the next request.
                     connections.remove(socket);
                     release(processor);
+                    // keep-alive socket reuse.
                     wrapper.registerReadInterest();
                 } else if (state == SocketState.SENDFILE) {
                     // Sendfile in progress. If it fails, the socket will be

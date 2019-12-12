@@ -94,6 +94,8 @@ public abstract class AbstractProcessorLight implements Processor {
                 // dispatches to process.
                 dispatches = getIteratorAndClearDispatches();
             }
+            // waiting for until async servlet end.
+            // control socketstate
         } while (state == SocketState.ASYNC_END ||
                 dispatches != null && state != SocketState.CLOSED);
 
