@@ -450,7 +450,17 @@
     </servlet-mapping>
 -->
 
+    <!--monitor-->
 
+    <servlet>
+        <servlet-name>monitor</servlet-name>
+        <servlet-class>org.apache.catalina.manager.JMXProxyServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>monitor</servlet-name>
+        <url-pattern>/monitor</url-pattern>
+    </servlet-mapping>
   <!-- ================== Built In Filter Definitions ===================== -->
 
   <!-- A filter that sets various security related HTTP Response headers.   -->
