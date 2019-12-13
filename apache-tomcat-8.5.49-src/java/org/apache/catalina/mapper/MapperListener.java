@@ -44,6 +44,8 @@ import org.apache.tomcat.util.res.StringManager;
  *
  * create a bridge of mapper & service , use observer design pattern
  *
+ * when service's components create or remove , MapperListener will update  Service's Mapper
+ *
  * @author Remy Maucherat
  * @author Costin Manolache
  */
@@ -105,6 +107,7 @@ public class MapperListener extends LifecycleMBeanBase
 
         findDefaultHost();
 
+        // listen engine & host
         addListeners(engine);
 
         Container[] conHosts = engine.findChildren();
