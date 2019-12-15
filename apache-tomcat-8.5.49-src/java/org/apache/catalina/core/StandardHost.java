@@ -735,6 +735,7 @@ public class StandardHost extends ContainerBase implements Host {
      */
     public String[] findReloadedContextMemoryLeaks() {
 
+        // full-gc
         System.gc();
 
         List<String> result = new ArrayList<>();
@@ -743,6 +744,7 @@ public class StandardHost extends ContainerBase implements Host {
                 childClassLoaders.entrySet()) {
             ClassLoader cl = entry.getKey();
             if (cl instanceof WebappClassLoaderBase) {
+                // classLoader is unAvailable but didn't be gc recycle
                 if (!((WebappClassLoaderBase) cl).getState().isAvailable()) {
                     result.add(entry.getValue());
                 }
@@ -827,6 +829,7 @@ public class StandardHost extends ContainerBase implements Host {
                     }
                 }
                 if(!found) {
+                    // create one
                     Valve valve =
                         (Valve) Class.forName(errorValve).getConstructor().newInstance();
                     getPipeline().addValve(valve);
