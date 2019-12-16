@@ -699,6 +699,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
 
     /**
+     * Container added will be start if it prepared.
+     *
      * Add a new child Container to those associated with this Container,
      * if supported.  Prior to adding this Container to the set of children,
      * the child's <code>setParent()</code> method must be called, with this
