@@ -42,6 +42,9 @@ public class NioChannel implements ByteChannel {
     protected SocketChannel sc = null;
     protected SocketWrapperBase<NioChannel> socketWrapper = null;
 
+    /**
+     * hold and operate socket read write buffer
+     */
     protected final SocketBufferHandler bufHandler;
 
     protected Poller poller;

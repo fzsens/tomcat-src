@@ -411,6 +411,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                 if (isSSLEnabled()) {
                     channel = new SecureNioChannel(socket, bufhandler, selectorPool, this);
                 } else {
+                    // create NioChannel
                     channel = new NioChannel(socket, bufhandler);
                 }
             } else {
