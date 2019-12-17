@@ -5068,6 +5068,7 @@ public class StandardContext extends ContainerBase
                 // Start our child containers, if not already started
                 // StandardContext's children is Servlet/ServletWrapper
                 for (Container child : findChildren()) {
+                    // why?
                     if (!child.getState().isAvailable()) {
                         child.start();
                     }

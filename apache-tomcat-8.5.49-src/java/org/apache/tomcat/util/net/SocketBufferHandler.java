@@ -20,6 +20,9 @@ import java.nio.ByteBuffer;
 
 import org.apache.tomcat.util.buf.ByteBufferUtils;
 
+/**
+ * help operate socket's byteBuffer
+ */
 public class SocketBufferHandler {
 
     private volatile boolean readBufferConfiguredForWrite = true;
