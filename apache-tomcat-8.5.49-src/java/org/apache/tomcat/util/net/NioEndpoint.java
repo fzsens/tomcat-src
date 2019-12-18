@@ -600,14 +600,17 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
         @Override
         public void run() {
             if (interestOps == OP_REGISTER) {
+                // first register,
                 // register the socket OP_READ Event of poller's selector
                 try {
+                    // last argument is attachment
                     socket.getIOChannel().register(
                             socket.getPoller().getSelector(), SelectionKey.OP_READ, socketWrapper);
                 } catch (Exception x) {
                     log.error(sm.getString("endpoint.nio.registerFail"), x);
                 }
             } else {
+                // again modified
                 // modify selectionKey's interestOps
                 final SelectionKey key = socket.getIOChannel().keyFor(socket.getPoller().getSelector());
                 try {

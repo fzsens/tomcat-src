@@ -19,7 +19,7 @@ package org.apache.tomcat.util.net;
 import java.util.Objects;
 
 /**
- * abstract of socket processor , the place of deal with I/O event in the end.
+ * abstract of socket processor , process socket.
  * @param <S>
  */
 public abstract class SocketProcessorBase<S> implements Runnable {

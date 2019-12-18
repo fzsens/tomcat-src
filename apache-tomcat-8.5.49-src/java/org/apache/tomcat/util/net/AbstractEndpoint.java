@@ -70,7 +70,7 @@ public abstract class AbstractEndpoint<S> {
          * Different types of socket states to react upon.<p></p>
          * OPEN : Tomcat can reuse this SOCKET <br/>
          * CLOSED : unregister selectionKey , release socket <br/>
-         * LONG :  in request process middle (upgrade or async mode) <br/>
+         * LONG :  in request processing (upgrade or async mode) <br/>
          * ASYNC_END : async servlet executed <br/>
          */
         public enum SocketState {
