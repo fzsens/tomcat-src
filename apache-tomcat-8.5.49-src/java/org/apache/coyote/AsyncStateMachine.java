@@ -270,6 +270,7 @@ public class AsyncStateMachine {
             return SocketState.ASYNC_END;
         } else  if (state == AsyncState.STARTING || state == AsyncState.READ_WRITE_OP) {
             state = AsyncState.STARTED;
+            // this occur async servlet start
             return SocketState.LONG;
         } else if (state == AsyncState.MUST_COMPLETE || state == AsyncState.COMPLETING) {
             asyncCtxt.fireOnComplete();

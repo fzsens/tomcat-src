@@ -190,6 +190,7 @@ public class Http11Processor extends AbstractProcessor {
         httpParser = new HttpParser(protocol.getRelaxedPathChars(),
                 protocol.getRelaxedQueryChars());
 
+        // create inputBuffer & outputBuffer associate  with request & response
         inputBuffer = new Http11InputBuffer(request, protocol.getMaxHttpHeaderSize(),
                 protocol.getRejectIllegalHeaderName(), httpParser);
         request.setInputBuffer(inputBuffer);

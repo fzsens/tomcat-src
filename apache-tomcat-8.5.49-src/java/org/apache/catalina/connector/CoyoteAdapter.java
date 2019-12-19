@@ -242,6 +242,7 @@ public class CoyoteAdapter implements Adapter {
             }
 
             if (!request.isAsync()) {
+                // flush response
                 request.finishRequest();
                 response.finishResponse();
             }
